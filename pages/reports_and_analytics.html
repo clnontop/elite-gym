@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reports and Analytics - Elite Gym Dashboard</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <script src="../js/auth.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fgymflowda1041back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.6"></script>
+</head>
+<body class="bg-background min-h-screen">
+    <!-- Global Header Navigation -->
+    <header class="header-gradient shadow-card border-b border-border" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <svg class="h-8 w-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
+                            <path d="M8 11h8v2H8z"/>
+                            <path d="M10 7h4v2h-4z"/>
+                            <path d="M10 15h4v2h-4z"/>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <h1 class="text-xl font-semibold text-text-primary">Elite Gym</h1>
+                        <p class="text-xs text-text-secondary">Dashboard</p>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="member_registration.html" class="text-white hover:text-gray-200 transition-colors px-3 py-2 rounded-md hover:bg-white hover:bg-opacity-10">
+                        Registration
+                    </a>
+                    <a href="member_management_dashboard.html" class="text-white hover:text-gray-200 transition-colors px-3 py-2 rounded-md hover:bg-white hover:bg-opacity-10">
+                        Dashboard
+                    </a>
+                    <a href="payment_defaulters.html" class="text-white hover:text-gray-200 transition-colors px-3 py-2 rounded-md hover:bg-white hover:bg-opacity-10">
+                        Defaulters
+                    </a>
+                    <a href="reports_and_analytics.html" class="text-white font-medium px-3 py-2 rounded-md bg-white bg-opacity-20">
+                        Reports
+                    </a>
+                </nav>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button type="button" class="text-text-secondary hover:text-primary p-2" onclick="toggleMobileMenu()">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation -->
+            <div id="mobile-menu" class="md:hidden hidden border-t border-border">
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    <a href="member_registration.html" class="text-text-secondary hover:text-primary block px-3 py-2 rounded-md hover:bg-gray-50">
+                        Registration
+                    </a>
+                    <a href="member_management_dashboard.html" class="text-text-secondary hover:text-primary block px-3 py-2 rounded-md hover:bg-gray-50">
+                        Dashboard
+                    </a>
+                    <a href="payment_defaulters.html" class="text-text-secondary hover:text-primary block px-3 py-2 rounded-md hover:bg-gray-50">
+                        Defaulters
+                    </a>
+                    <a href="reports_and_analytics.html" class="text-primary font-medium block px-3 py-2 rounded-md bg-primary-50">
+                        Reports
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <nav class="flex" aria-label="Breadcrumb">
+            <ol class="flex items-center space-x-2">
+                <li>
+                    <div class="flex items-center">
+                        <svg class="h-4 w-4 text-text-secondary" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+                        </svg>
+                        <span class="ml-2 text-sm text-text-secondary">Analytics</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <svg class="h-4 w-4 text-text-secondary" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="ml-2 text-sm font-medium text-primary">Reports & Analytics</span>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+        <!-- Header Section -->
+        <div class="mb-8">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+                <div>
+                    <h2 class="text-2xl font-semibold text-text-primary mb-2">Reports & Analytics</h2>
+                    <p class="text-text-secondary">Comprehensive insights into membership trends, payment performance, and business metrics.</p>
+                </div>
+                <div class="mt-4 lg:mt-0 flex flex-col sm:flex-row gap-3">
+                    <div class="flex items-center space-x-2">
+                        <label for="dateRange" class="text-sm font-medium text-text-primary">Date Range:</label>
+                        <select id="dateRange" class="form-input text-sm" onchange="updateDateRange()">
+                            <option value="7">Last 7 days</option>
+                            <option value="30" selected>Last 30 days</option>
+                            <option value="90">Last 3 months</option>
+                            <option value="365">Last year</option>
+                        </select>
+                    </div>
+                    <button onclick="exportReports()" class="btn-secondary flex items-center">
+                        <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Export Reports
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Monthly Revenue -->
+            <div class="bg-surface rounded-lg shadow-card p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-text-secondary">Monthly Revenue</p>
+                        <p class="text-2xl font-semibold text-text-primary" id="monthlyRevenue">$12,450</p>
+                        <div class="flex items-center mt-2">
+                            <svg class="h-4 w-4 text-success mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                            </svg>
+                            <span class="text-sm text-success font-medium">+12.5%</span>
+                            <span class="text-sm text-text-secondary ml-1">vs last month</span>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-primary-50 rounded-lg">
+                        <svg class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Registrations -->
+            <div class="bg-surface rounded-lg shadow-card p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-text-secondary">New Registrations</p>
+                        <p class="text-2xl font-semibold text-text-primary" id="newRegistrations">47</p>
+                        <div class="flex items-center mt-2">
+                            <svg class="h-4 w-4 text-success mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                            </svg>
+                            <span class="text-sm text-success font-medium">+8.2%</span>
+                            <span class="text-sm text-text-secondary ml-1">vs last month</span>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-secondary-50 rounded-lg">
+                        <svg class="h-6 w-6 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Retention Rate -->
+            <div class="bg-surface rounded-lg shadow-card p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-text-secondary">Retention Rate</p>
+                        <p class="text-2xl font-semibold text-text-primary" id="retentionRate">89.3%</p>
+                        <div class="flex items-center mt-2">
+                            <svg class="h-4 w-4 text-success mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                            </svg>
+                            <span class="text-sm text-success font-medium">+2.1%</span>
+                            <span class="text-sm text-text-secondary ml-1">vs last month</span>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-success-50 rounded-lg">
+                        <svg class="h-6 w-6 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Collection Efficiency -->
+            <div class="bg-surface rounded-lg shadow-card p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-text-secondary">Collection Efficiency</p>
+                        <p class="text-2xl font-semibold text-text-primary" id="collectionEfficiency">94.7%</p>
+                        <div class="flex items-center mt-2">
+                            <svg class="h-4 w-4 text-warning mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
+                            </svg>
+                            <span class="text-sm text-warning font-medium">-1.2%</span>
+                            <span class="text-sm text-text-secondary ml-1">vs last month</span>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-warning-50 rounded-lg">
+                        <svg class="h-6 w-6 text-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabbed Interface -->
+        <div class="bg-surface rounded-lg shadow-card">
+            <!-- Tab Navigation -->
+            <div class="border-b border-border">
+                <nav class="flex space-x-8 px-6" aria-label="Tabs">
+                    <button onclick="switchTab('overview')" id="tab-overview" class="tab-button active py-4 px-1 border-b-2 font-medium text-sm">
+                        Overview
+                    </button>
+                    <button onclick="switchTab('financial')" id="tab-financial" class="tab-button py-4 px-1 border-b-2 font-medium text-sm">
+                        Financial Reports
+                    </button>
+                    <button onclick="switchTab('member')" id="tab-member" class="tab-button py-4 px-1 border-b-2 font-medium text-sm">
+                        Member Analytics
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="p-6">
+                <!-- Overview Tab -->
+                <div id="overview-content" class="tab-content">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <!-- Membership Growth Chart -->
+                        <div class="bg-gray-50 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-medium text-text-primary">Membership Growth</h3>
+                                <div class="flex items-center space-x-2">
+                                    <div class="flex items-center">
+                                        <div class="w-3 h-3 bg-primary rounded-full mr-2"></div>
+                                        <span class="text-sm text-text-secondary">New Members</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="w-3 h-3 bg-secondary rounded-full mr-2"></div>
+                                        <span class="text-sm text-text-secondary">Total Members</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="h-64">
+                                <canvas id="membershipGrowthChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Payment Status Distribution -->
+                        <div class="bg-gray-50 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-medium text-text-primary">Payment Status</h3>
+                                <select class="form-input text-sm" onchange="updatePaymentChart()">
+                                    <option value="current">Current Month</option>
+                                    <option value="last">Last Month</option>
+                                    <option value="quarter">This Quarter</option>
+                                </select>
+                            </div>
+                            <div class="h-64">
+                                <canvas id="paymentStatusChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Monthly Revenue Trend -->
+                        <div class="lg:col-span-2 bg-gray-50 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-medium text-text-primary">Monthly Revenue Trend</h3>
+                                <div class="flex items-center space-x-4">
+                                    <div class="flex items-center">
+                                        <div class="w-3 h-3 bg-success rounded-full mr-2"></div>
+                                        <span class="text-sm text-text-secondary">Revenue</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="w-3 h-3 bg-warning rounded-full mr-2"></div>
+                                        <span class="text-sm text-text-secondary">Target</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="h-80">
+                                <canvas id="revenueChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Financial Reports Tab -->
+                <div id="financial-content" class="tab-content hidden">
+                    <div class="space-y-8">
+                        <!-- Filter Controls -->
+                        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between bg-gray-50 rounded-lg p-4">
+                            <div class="flex flex-col sm:flex-row gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-text-primary mb-1">Period</label>
+                                    <select class="form-input text-sm" onchange="updateFinancialData()">
+                                        <option value="monthly">Monthly</option>
+                                        <option value="quarterly">Quarterly</option>
+                                        <option value="yearly">Yearly</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-text-primary mb-1">Membership Type</label>
+                                    <select class="form-input text-sm" onchange="updateFinancialData()">
+                                        <option value="all">All Types</option>
+                                        <option value="monthly">Monthly</option>
+                                        <option value="annual">Annual</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-text-primary mb-1">Status</label>
+                                    <select class="form-input text-sm" onchange="updateFinancialData()">
+                                        <option value="all">All Status</option>
+                                        <option value="paid">Paid</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="overdue">Overdue</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mt-4 lg:mt-0">
+                                <button onclick="exportFinancialReport()" class="btn-primary flex items-center">
+                                    <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                    </svg>
+                                    Export CSV
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Financial Summary Cards -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="bg-success-50 rounded-lg p-6">
+                                <div class="flex items-center">
+                                    <div class="p-2 bg-success rounded-lg">
+                                        <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="ml-4">
+                                        <p class="text-sm font-medium text-text-secondary">Total Collections</p>
+                                        <p class="text-2xl font-semibold text-text-primary">$11,785</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-warning-50 rounded-lg p-6">
+                                <div class="flex items-center">
+                                    <div class="p-2 bg-warning rounded-lg">
+                                        <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="ml-4">
+                                        <p class="text-sm font-medium text-text-secondary">Outstanding</p>
+                                        <p class="text-2xl font-semibold text-text-primary">$665</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-error-50 rounded-lg p-6">
+                                <div class="flex items-center">
+                                    <div class="p-2 bg-error rounded-lg">
+                                        <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="ml-4">
+                                        <p class="text-sm font-medium text-text-secondary">Overdue</p>
+                                        <p class="text-2xl font-semibold text-text-primary">$285</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Financial Data Table -->
+                        <div class="bg-gray-50 rounded-lg overflow-hidden">
+                            <div class="px-6 py-4 border-b border-border">
+                                <h3 class="text-lg font-medium text-text-primary">Payment Collections</h3>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-border">
+                                    <thead class="bg-gray-100">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">Period</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">Expected</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">Collected</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">Outstanding</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">Efficiency</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="financialTableBody" class="bg-surface divide-y divide-border">
+                                        <!-- Table rows will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Analytics Tab -->
+                <div id="member-content" class="tab-content hidden">
+                    <div class="space-y-8">
+                        <!-- Demographics Overview -->
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                            <!-- Age Distribution -->
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <h3 class="text-lg font-medium text-text-primary mb-4">Age Distribution</h3>
+                                <div class="h-64">
+                                    <canvas id="ageDistributionChart"></canvas>
+                                </div>
+                            </div>
+
+                            <!-- Gender Distribution -->
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <h3 class="text-lg font-medium text-text-primary mb-4">Gender Distribution</h3>
+                                <div class="h-64">
+                                    <canvas id="genderDistributionChart"></canvas>
+                                </div>
+                            </div>
+
+                            <!-- Membership Type Distribution -->
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <h3 class="text-lg font-medium text-text-primary mb-4">Membership Types</h3>
+                                <div class="h-64">
+                                    <canvas id="membershipTypeChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Retention Analysis -->
+                        <div class="bg-gray-50 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-medium text-text-primary">Member Retention Analysis</h3>
+                                <select class="form-input text-sm" onchange="updateRetentionChart()">
+                                    <option value="6">Last 6 months</option>
+                                    <option value="12" selected>Last 12 months</option>
+                                    <option value="24">Last 24 months</option>
+                                </select>
+                            </div>
+                            <div class="h-80">
+                                <canvas id="retentionChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Member Activity Stats -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div class="bg-surface rounded-lg shadow-card p-6">
+                                <div class="flex items-center">
+                                    <div class="p-3 bg-primary-50 rounded-lg">
+                                        <svg class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="ml-4">
+                                        <p class="text-sm font-medium text-text-secondary">Active Members</p>
+                                        <p class="text-2xl font-semibold text-text-primary">234</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-surface rounded-lg shadow-card p-6">
+                                <div class="flex items-center">
+                                    <div class="p-3 bg-warning-50 rounded-lg">
+                                        <svg class="h-6 w-6 text-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="ml-4">
+                                        <p class="text-sm font-medium text-text-secondary">Expiring Soon</p>
+                                        <p class="text-2xl font-semibold text-text-primary">18</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-surface rounded-lg shadow-card p-6">
+                                <div class="flex items-center">
+                                    <div class="p-3 bg-success-50 rounded-lg">
+                                        <svg class="h-6 w-6 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="ml-4">
+                                        <p class="text-sm font-medium text-text-secondary">Renewals</p>
+                                        <p class="text-2xl font-semibold text-text-primary">42</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-surface rounded-lg shadow-card p-6">
+                                <div class="flex items-center">
+                                    <div class="p-3 bg-error-50 rounded-lg">
+                                        <svg class="h-6 w-6 text-error" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"/>
+                                        </svg>
+                                    </div>
+                                    <div class="ml-4">
+                                        <p class="text-sm font-medium text-text-secondary">Churned</p>
+                                        <p class="text-2xl font-semibold text-text-primary">12</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Global variables for charts
+        let membershipGrowthChart, paymentStatusChart, revenueChart;
+        let ageDistributionChart, genderDistributionChart, membershipTypeChart, retentionChart;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadMockData();
+            initializeCharts();
+            populateFinancialTable();
+            updateKPIs();
+        });
+
+        // Toggle mobile menu
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        // Tab switching functionality
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active', 'border-primary', 'text-primary');
+                button.classList.add('border-transparent', 'text-text-secondary', 'hover:text-text-primary', 'hover:border-gray-300');
+            });
+            
+            // Show selected tab content
+            document.getElementById(`${tabName}-content`).classList.remove('hidden');
+            
+            // Add active class to selected tab
+            const activeTab = document.getElementById(`tab-${tabName}`);
+            activeTab.classList.add('active', 'border-primary', 'text-primary');
+            activeTab.classList.remove('border-transparent', 'text-text-secondary', 'hover:text-text-primary', 'hover:border-gray-300');
+        }
+
+        // Load mock data
+        function loadMockData() {
+            // Check if we have existing data, otherwise create mock data
+            let members = JSON.parse(localStorage.getItem('gymMembers') || '[]');
+            
+            if (members.length === 0) {
+                // Create mock members for analytics
+                const mockMembers = generateMockMembers(250);
+                localStorage.setItem('gymMembers', JSON.stringify(mockMembers));
+            }
+        }
+
+        // Generate mock members for analytics
+        function generateMockMembers(count) {
+            const members = [];
+            const names = ['John Smith', 'Sarah Johnson', 'Michael Brown', 'Emily Davis', 'David Wilson', 'Jessica Miller', 'Christopher Taylor', 'Ashley Anderson', 'Matthew Thomas', 'Amanda Jackson'];
+            const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
+            
+            for (let i = 0; i < count; i++) {
+                const registrationDate = new Date();
+                registrationDate.setDate(registrationDate.getDate() - Math.floor(Math.random() * 365));
+                
+                const membershipType = Math.random() > 0.6 ? 'Monthly' : 'Annual';
+                const startDate = new Date(registrationDate);
+                const endDate = new Date(startDate);
+                
+                if (membershipType === 'Monthly') {
+                    endDate.setMonth(endDate.getMonth() + 1);
+                } else {
+                    endDate.setFullYear(endDate.getFullYear() + 1);
+                }
+                
+                const age = 18 + Math.floor(Math.random() * 50);
+                const birthDate = new Date();
+                birthDate.setFullYear(birthDate.getFullYear() - age);
+                
+                members.push({
+                    id: Date.now() + i,
+                    admissionNumber: `GM2024${(i + 1).toString().padStart(3, '0')}`,
+                    fullName: names[Math.floor(Math.random() * names.length)],
+                    mobileNumber: `(555) ${Math.floor(Math.random() * 900) + 100}-${Math.floor(Math.random() * 9000) + 1000}`,
+                    sex: Math.random() > 0.5 ? 'Male' : 'Female',
+                    dateOfBirth: birthDate.toISOString().split('T')[0],
+                    bloodGroup: bloodGroups[Math.floor(Math.random() * bloodGroups.length)],
+                    address: `${Math.floor(Math.random() * 9999) + 1} Main St, City, State`,
+                    emergencyContactName: names[Math.floor(Math.random() * names.length)],
+                    emergencyRelationship: ['Parent', 'Spouse', 'Sibling', 'Friend'][Math.floor(Math.random() * 4)],
+                    emergencyContactNumber: `(555) ${Math.floor(Math.random() * 900) + 100}-${Math.floor(Math.random() * 9000) + 1000}`,
+                    membershipType: membershipType,
+                    startDate: startDate.toISOString().split('T')[0],
+                    endDate: endDate.toISOString().split('T')[0],
+                    registrationDate: registrationDate.toISOString(),
+                    status: endDate > new Date() ? 'Active' : 'Expired',
+                    paymentHistory: generateMockPaymentHistory(startDate, membershipType)
+                });
+            }
+            
+            return members;
+        }
+
+        // Generate mock payment history
+        function generateMockPaymentHistory(startDate, membershipType) {
+            const history = [];
+            const start = new Date(startDate);
+            const isMonthly = membershipType === 'Monthly';
+            const amount = isMonthly ? 50 : 500;
+            const periods = isMonthly ? 12 : 1;
+            
+            for (let i = 0; i < periods; i++) {
+                const paymentDate = new Date(start);
+                if (isMonthly) {
+                    paymentDate.setMonth(paymentDate.getMonth() + i);
+                }
+                
+                const isPaid = Math.random() > 0.15; // 85% payment rate
+                
+                history.push({
+                    id: Date.now() + i,
+                    dueDate: paymentDate.toISOString().split('T')[0],
+                    amount: amount,
+                    status: isPaid ? 'Paid' : 'Pending',
+                    paidDate: isPaid ? paymentDate.toISOString().split('T')[0] : null,
+                    method: isPaid ? ['Cash', 'Card', 'Bank Transfer'][Math.floor(Math.random() * 3)] : null
+                });
+            }
+            
+            return history;
+        }
+
+        // Initialize all charts
+        function initializeCharts() {
+            initializeMembershipGrowthChart();
+            initializePaymentStatusChart();
+            initializeRevenueChart();
+            initializeAgeDistributionChart();
+            initializeGenderDistributionChart();
+            initializeMembershipTypeChart();
+            initializeRetentionChart();
+        }
+
+        // Initialize membership growth chart
+        function initializeMembershipGrowthChart() {
+            const ctx = document.getElementById('membershipGrowthChart').getContext('2d');
+            const members = JSON.parse(localStorage.getItem('gymMembers') || '[]');
+            
+            // Generate last 12 months data
+            const months = [];
+            const newMembersData = [];
+            const totalMembersData = [];
+            
+            for (let i = 11; i >= 0; i--) {
+                const date = new Date();
+                date.setMonth(date.getMonth() - i);
+                months.push(date.toLocaleDateString('en-US', { month: 'short' }));
+                
+                const monthStart = new Date(date.getFullYear(), date.getMonth(), 1);
+                const monthEnd = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+                
+                const newMembers = members.filter(member => {
+                    const regDate = new Date(member.registrationDate);
+                    return regDate >= monthStart && regDate <= monthEnd;
+                }).length;
+                
+                const totalMembers = members.filter(member => {
+                    const regDate = new Date(member.registrationDate);
+                    return regDate <= monthEnd;
+                }).length;
+                
+                newMembersData.push(newMembers);
+                totalMembersData.push(totalMembers);
+            }
+            
+            membershipGrowthChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: months,
+                    datasets: [{
+                        label: 'New Members',
+                        data: newMembersData,
+                        borderColor: '#1E40AF',
+                        backgroundColor: 'rgba(30, 64, 175, 0.1)',
+                        tension: 0.4
+                    }, {
+                        label: 'Total Members',
+                        data: totalMembersData,
+                        borderColor: '#F59E0B',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize payment status chart
+        function initializePaymentStatusChart() {
+            const ctx = document.getElementById('paymentStatusChart').getContext('2d');
+            const members = JSON.parse(localStorage.getItem('gymMembers') || '[]');
+            
+            let paid = 0, pending = 0, overdue = 0;
+            const currentDate = new Date();
+            
+            members.forEach(member => {
+                if (member.status === 'Active') {
+                    const currentMonthPayment = member.paymentHistory.find(payment => {
+                        const paymentDate = new Date(payment.dueDate);
+                        return paymentDate.getMonth() === currentDate.getMonth() && 
+                               paymentDate.getFullYear() === currentDate.getFullYear();
+                    });
+                    
+                    if (currentMonthPayment) {
+                        if (currentMonthPayment.status === 'Paid') {
+                            paid++;
+                        } else {
+                            const dueDate = new Date(currentMonthPayment.dueDate);
+                            if (dueDate < currentDate) {
+                                overdue++;
+                            } else {
+                                pending++;
+                            }
+                        }
+                    }
+                }
+            });
+            
+            paymentStatusChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Paid', 'Pending', 'Overdue'],
+                    datasets: [{
+                        data: [paid, pending, overdue],
+                        backgroundColor: ['#10B981', '#F59E0B', '#EF4444'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize revenue chart
+        function initializeRevenueChart() {
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            const members = JSON.parse(localStorage.getItem('gymMembers') || '[]');
+            
+            const months = [];
+            const revenueData = [];
+            const targetData = [];
+            
+            for (let i = 11; i >= 0; i--) {
+                const date = new Date();
+                date.setMonth(date.getMonth() - i);
+                months.push(date.toLocaleDateString('en-US', { month: 'short', year: '2-digit' }));
+                
+                let monthlyRevenue = 0;
+                members.forEach(member => {
+                    member.paymentHistory.forEach(payment => {
+                        const paymentDate = new Date(payment.dueDate);
+                        if (paymentDate.getMonth() === date.getMonth() && 
+                            paymentDate.getFullYear() === date.getFullYear() && 
+                            payment.status === 'Paid') {
+                            monthlyRevenue += payment.amount;
+                        }
+                    });
+                });
+                
+                revenueData.push(monthlyRevenue);
+                targetData.push(12000); // Target revenue
+            }
+            
+            revenueChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: months,
+                    datasets: [{
+                        label: 'Revenue',
+                        data: revenueData,
+                        backgroundColor: '#10B981',
+                        borderRadius: 4
+                    }, {
+                        label: 'Target',
+                        data: targetData,
+                        type: 'line',
+                        borderColor: '#F59E0B',
+                        backgroundColor: 'transparent',
+                        tension: 0.4,
+                        pointBackgroundColor: '#F59E0B'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize age distribution chart
+        function initializeAgeDistributionChart() {
+            const ctx = document.getElementById('ageDistributionChart').getContext('2d');
+            const members = JSON.parse(localStorage.getItem('gymMembers') || '[]');
+            
+            const ageGroups = { '18-25': 0, '26-35': 0, '36-45': 0, '46-55': 0, '55+': 0 };
+            
+            members.forEach(member => {
+                const age = new Date().getFullYear() - new Date(member.dateOfBirth).getFullYear();
+                if (age <= 25) ageGroups['18-25']++;
+                else if (age <= 35) ageGroups['26-35']++;
+                else if (age <= 45) ageGroups['36-45']++;
+                else if (age <= 55) ageGroups['46-55']++;
+                else ageGroups['55+']++;
+            });
+            
+            ageDistributionChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(ageGroups),
+                    datasets: [{
+                        data: Object.values(ageGroups),
+                        backgroundColor: ['#1E40AF', '#3B82F6', '#60A5FA', '#93C5FD', '#DBEAFE'],
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize gender distribution chart
+        function initializeGenderDistributionChart() {
+            const ctx = document.getElementById('genderDistributionChart').getContext('2d');
+            const members = JSON.parse(localStorage.getItem('gymMembers') || '[]');
+            
+            const genderCount = { Male: 0, Female: 0, Other: 0 };
+            members.forEach(member => {
+                genderCount[member.sex]++;
+            });
+            
+            genderDistributionChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(genderCount),
+                    datasets: [{
+                        data: Object.values(genderCount),
+                        backgroundColor: ['#1E40AF', '#F59E0B', '#10B981'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize membership type chart
+        function initializeMembershipTypeChart() {
+            const ctx = document.getElementById('membershipTypeChart').getContext('2d');
+            const members = JSON.parse(localStorage.getItem('gymMembers') || '[]');
+            
+            const typeCount = { Monthly: 0, Annual: 0 };
+            members.forEach(member => {
+                typeCount[member.membershipType]++;
+            });
+            
+            membershipTypeChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(typeCount),
+                    datasets: [{
+                        data: Object.values(typeCount),
+                        backgroundColor: ['#1E40AF', '#F59E0B'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize retention chart
+        function initializeRetentionChart() {
+            const ctx = document.getElementById('retentionChart').getContext('2d');
+            const members = JSON.parse(localStorage.getItem('gymMembers') || '[]');
+            
+            const months = [];
+            const retentionData = [];
+            
+            for (let i = 11; i >= 0; i--) {
+                const date = new Date();
+                date.setMonth(date.getMonth() - i);
+                months.push(date.toLocaleDateString('en-US', { month: 'short' }));
+                
+                const monthStart = new Date(date.getFullYear(), date.getMonth(), 1);
+                const monthEnd = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+                
+                const activeMembers = members.filter(member => {
+                    const startDate = new Date(member.startDate);
+                    const endDate = new Date(member.endDate);
+                    return startDate <= monthEnd && endDate >= monthStart;
+                }).length;
+                
+                const totalMembers = members.filter(member => {
+                    const regDate = new Date(member.registrationDate);
+                    return regDate <= monthEnd;
+                }).length;
+                
+                const retention = totalMembers > 0 ? (activeMembers / totalMembers) * 100 : 0;
+                retentionData.push(Math.round(retention * 10) / 10);
+            }
+            
+            retentionChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: months,
+                    datasets: [{
+                        label: 'Retention Rate (%)',
+                        data: retentionData,
+                        borderColor: '#10B981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Update KPIs
+        function updateKPIs() {
+            const members = JSON.parse(localStorage.getItem('gymMembers') || '[]');
+            const currentDate = new Date();
+            const currentMonth = currentDate.getMonth();
+            const currentYear = currentDate.getFullYear();
+            
+            // Calculate monthly revenue
+            let monthlyRevenue = 0;
+            members.forEach(member => {
+                member.paymentHistory.forEach(payment => {
+                    const paymentDate = new Date(payment.dueDate);
+                    if (paymentDate.getMonth() === currentMonth && 
+                        paymentDate.getFullYear() === currentYear && 
+                        payment.status === 'Paid') {
+                        monthlyRevenue += payment.amount;
+                    }
+                });
+            });
+            
+            // Calculate new registrations this month
+            const newRegistrations = members.filter(member => {
+                const regDate = new Date(member.registrationDate);
+                return regDate.getMonth() === currentMonth && regDate.getFullYear() === currentYear;
+            }).length;
+            
+            // Calculate retention rate
+            const activeMembers = members.filter(member => member.status === 'Active').length;
+            const totalMembers = members.length;
+            const retentionRate = totalMembers > 0 ? (activeMembers / totalMembers) * 100 : 0;
+            
+            // Calculate collection efficiency
+            let totalDue = 0;
+            let totalCollected = 0;
+            members.forEach(member => {
+                member.paymentHistory.forEach(payment => {
+                    const paymentDate = new Date(payment.dueDate);
+                    if (paymentDate.getMonth() === currentMonth && paymentDate.getFullYear() === currentYear) {
+                        totalDue += payment.amount;
+                        if (payment.status === 'Paid') {
+                            totalCollected += payment.amount;
+                        }
+                    }
+                });
+            });
+            const collectionEfficiency = totalDue > 0 ? (totalCollected / totalDue) * 100 : 0;
+            
+            // Update DOM
+            document.getElementById('monthlyRevenue').textContent = '$' + monthlyRevenue.toLocaleString();
+            document.getElementById('newRegistrations').textContent = newRegistrations;
+            document.getElementById('retentionRate').textContent = retentionRate.toFixed(1) + '%';
+            document.getElementById('collectionEfficiency').textContent = collectionEfficiency.toFixed(1) + '%';
+        }
+
+        // Populate financial table
+        function populateFinancialTable() {
+            const members = JSON.parse(localStorage.getItem('gymMembers') || '[]');
+            const tbody = document.getElementById('financialTableBody');
+            const rows = [];
+            
+            // Generate last 6 months data
+            for (let i = 5; i >= 0; i--) {
+                const date = new Date();
+                date.setMonth(date.getMonth() - i);
+                const monthYear = date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                
+                let expected = 0;
+                let collected = 0;
+                let outstanding = 0;
+                
+                members.forEach(member => {
+                    member.paymentHistory.forEach(payment => {
+                        const paymentDate = new Date(payment.dueDate);
+                        if (paymentDate.getMonth() === date.getMonth() && 
+                            paymentDate.getFullYear() === date.getFullYear()) {
+                            expected += payment.amount;
+                            if (payment.status === 'Paid') {
+                                collected += payment.amount;
+                            } else {
+                                outstanding += payment.amount;
+                            }
+                        }
+                    });
+                });
+                
+                const efficiency = expected > 0 ? (collected / expected) * 100 : 0;
+                
+                rows.push(`
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-text-primary">${monthYear}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">$${expected.toLocaleString()}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-success">$${collected.toLocaleString()}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-error">$${outstanding.toLocaleString()}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${efficiency >= 90 ? 'bg-success-100 text-success-800' : efficiency >= 70 ? 'bg-warning-100 text-warning-800' : 'bg-error-100 text-error-800'}">
+                                ${efficiency.toFixed(1)}%
+                            </span>
+                        </td>
+                    </tr>
+                `);
+            }
+            
+            tbody.innerHTML = rows.join('');
+        }
+
+        // Update functions for filters
+        function updateDateRange() {
+            // Refresh charts with new date range
+            initializeCharts();
+            updateKPIs();
+        }
+
+        function updatePaymentChart() {
+            // Refresh payment status chart
+            initializePaymentStatusChart();
+        }
+
+        function updateFinancialData() {
+            // Refresh financial table
+            populateFinancialTable();
+        }
+
+        function updateRetentionChart() {
+            // Refresh retention chart
+            initializeRetentionChart();
+        }
+
+        // Export functions
+        function exportReports() {
+            const members = JSON.parse(localStorage.getItem('gymMembers') || '[]');
+            
+            // Create CSV content
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Admission Number,Name,Membership Type,Status,Registration Date,Payment Status\n";
+            
+            members.forEach(member => {
+                const currentDate = new Date();
+                const currentMonthPayment = member.paymentHistory.find(payment => {
+                    const paymentDate = new Date(payment.dueDate);
+                    return paymentDate.getMonth() === currentDate.getMonth() && 
+                           paymentDate.getFullYear() === currentDate.getFullYear();
+                });
+                
+                const paymentStatus = currentMonthPayment ? currentMonthPayment.status : 'N/A';
+                
+                csvContent += `${member.admissionNumber},${member.fullName},${member.membershipType},${member.status},${member.registrationDate},${paymentStatus}\n`;
+            });
+            
+            // Download CSV
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `gym_reports_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function exportFinancialReport() {
+            // Similar to exportReports but focused on financial data
+            const members = JSON.parse(localStorage.getItem('gymMembers') || '[]');
+            
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Member,Admission Number,Payment Date,Amount,Status,Method\n";
+            
+            members.forEach(member => {
+                member.paymentHistory.forEach(payment => {
+                    csvContent += `${member.fullName},${member.admissionNumber},${payment.dueDate},$${payment.amount},${payment.status},${payment.method || 'N/A'}\n`;
+                });
+            });
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `financial_report_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>

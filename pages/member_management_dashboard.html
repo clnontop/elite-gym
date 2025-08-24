@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Member Management Dashboard - Elite Gym Dashboard</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="../js/auth.js"></script>
+    <style>
+        /* Enhanced visual improvements */
+        .header-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .stat-icon {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        
+        .btn-gradient {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-gradient:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .admin-header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            margin-left: auto;
+        }
+    </style>
+</head>
+<body class="bg-background min-h-screen">
+    <div class="min-h-screen bg-gray-900">
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-purple-600 to-blue-600 shadow-lg">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-6">
+                <nav class="hidden md:flex space-x-8">
+                    <a href="member_registration.html" class="text-white hover:text-gray-200 transition-colors px-3 py-2 rounded-md hover:bg-white hover:bg-opacity-10">
+                        Registration
+                    </a>
+                    <a href="member_management_dashboard.html" class="text-white font-medium px-3 py-2 rounded-md bg-white bg-opacity-20">
+                        Dashboard
+                    </a>
+                    <a href="payment_defaulters.html" class="text-white hover:text-gray-200 transition-colors px-3 py-2 rounded-md hover:bg-white hover:bg-opacity-10">
+                        Defaulters
+                    </a>
+                    <a href="reports_and_analytics.html" class="text-white hover:text-gray-200 transition-colors px-3 py-2 rounded-md hover:bg-white hover:bg-opacity-10">
+                        Reports
+                    </a>
+                </nav>
+
+                <!-- Admin Info & Logout -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <div class="admin-header">
+                        <span class="text-white text-sm">Welcome, <span data-user-info>Admin</span></span>
+                    </div>
+                    <button data-logout class="text-white hover:text-gray-200 transition-colors px-3 py-2 rounded-md hover:bg-white hover:bg-opacity-10">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center space-x-2">
+                    <span class="text-white text-sm" data-user-info>Admin</span>
+                    <button data-logout class="text-white hover:text-gray-200 p-1">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="text-white hover:text-gray-200 p-2" onclick="toggleMobileMenu()">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation -->
+            <div id="mobile-menu" class="md:hidden hidden border-t border-white border-opacity-20">
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    <a href="member_registration.html" class="text-white hover:text-gray-200 block px-3 py-2 rounded-md hover:bg-white hover:bg-opacity-10">
+                        Registration
+                    </a>
+                    <a href="member_management_dashboard.html" class="text-white font-medium block px-3 py-2 rounded-md bg-white bg-opacity-20">
+                        Dashboard
+                    </a>
+                    <a href="payment_defaulters.html" class="text-white hover:text-gray-200 block px-3 py-2 rounded-md hover:bg-white hover:bg-opacity-10">
+                        Defaulters
+                    </a>
+                    <a href="reports_and_analytics.html" class="text-white hover:text-gray-200 block px-3 py-2 rounded-md hover:bg-white hover:bg-opacity-10">
+                        Reports
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <nav class="flex" aria-label="Breadcrumb">
+            <ol class="flex items-center space-x-2">
+                <li>
+                    <div class="flex items-center">
+                        <svg class="h-4 w-4 text-text-secondary" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+                        </svg>
+                        <span class="ml-2 text-sm text-text-secondary">Dashboard</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <svg class="h-4 w-4 text-text-secondary" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="ml-2 text-sm font-medium text-primary">Member Management</span>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+        <!-- Dashboard Header -->
+        <div class="mb-8">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h2 class="text-2xl font-semibold text-text-primary mb-2">Member Management Dashboard</h2>
+                    <p class="text-text-secondary">Monitor membership status, track payments, and manage member information efficiently.</p>
+                </div>
+                <div class="mt-4 sm:mt-0 flex space-x-3">
+                    <button onclick="exportData()" class="btn-secondary px-4 py-2 flex items-center">
+                        <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Export Data
+                    </button>
+                    <a href="member_registration.html" class="btn-gradient px-4 py-2 flex items-center rounded-md">
+                        <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        </svg>
+                        Add Member
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Total Active Members -->
+            <div class="bg-surface rounded-lg shadow-card p-6 card-hover">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 stat-icon rounded-lg flex items-center justify-center">
+                            <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-text-secondary">Total Active Members</p>
+                        <p class="text-2xl font-semibold text-text-primary" id="totalMembers">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Current Month Collections -->
+            <div class="bg-surface rounded-lg shadow-card p-6 card-hover">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 bg-success rounded-lg flex items-center justify-center">
+                            <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-text-secondary">Current Month Collections</p>
+                        <p class="text-2xl font-semibold text-text-primary" id="monthlyCollections">$0.00</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Payments -->
+            <div class="bg-surface rounded-lg shadow-card p-6 card-hover">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 bg-warning rounded-lg flex items-center justify-center">
+                            <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-text-secondary">Pending Payments</p>
+                        <p class="text-2xl font-semibold text-text-primary" id="pendingPayments">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Membership Expiry Alerts -->
+            <div class="bg-surface rounded-lg shadow-card p-6 card-hover">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 bg-error rounded-lg flex items-center justify-center">
+                            <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-text-secondary">Expiring Soon</p>
+                        <p class="text-2xl font-semibold text-text-primary" id="expiringMembers">0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters and Search -->
+        <div class="bg-surface rounded-lg shadow-card p-6 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Search Bar -->
+                <div class="lg:col-span-2">
+                    <label for="searchInput" class="block text-sm font-medium text-text-primary mb-2">Search Members</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </div>
+                        <input type="text" id="searchInput" placeholder="Search by name, admission number, or mobile..." class="form-input w-full pl-10" onkeyup="filterMembers()" />
+                    </div>
+                </div>
+
+                <!-- Membership Type Filter -->
+                <div>
+                    <label for="membershipFilter" class="block text-sm font-medium text-text-primary mb-2">Membership Type</label>
+                    <select id="membershipFilter" class="form-input w-full" onchange="filterMembers()">
+                        <option value>All Types</option>
+                        <option value="Monthly">Monthly</option>
+                        <option value="Annual">Annual</option>
+                    </select>
+                </div>
+
+                <!-- Payment Status Filter -->
+                <div>
+                    <label for="paymentFilter" class="block text-sm font-medium text-text-primary mb-2">Payment Status</label>
+                    <select id="paymentFilter" class="form-input w-full" onchange="filterMembers()">
+                        <option value>All Status</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Overdue">Overdue</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Filter Actions -->
+            <div class="flex justify-between items-center mt-4 pt-4 border-t border-border">
+                <div class="flex items-center space-x-4">
+                    <button onclick="resetFilters()" class="text-text-secondary hover:text-primary transition-colors flex items-center">
+                        <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                        Reset Filters
+                    </button>
+                    <span id="filterResults" class="text-sm text-text-secondary">Showing all members</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <label class="flex items-center">
+                        <input type="checkbox" id="bulkSelectAll" class="form-checkbox h-4 w-4 text-primary" onchange="toggleBulkSelect()" />
+                        <span class="ml-2 text-sm text-text-secondary">Select All</span>
+                    </label>
+                    <button id="bulkActions" onclick="showBulkActions()" class="btn-secondary px-3 py-1 text-sm hidden">
+                        Bulk Actions
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Member Table -->
+        <div class="bg-surface rounded-lg shadow-card overflow-hidden">
+            <!-- Desktop Table -->
+            <div class="hidden lg:block overflow-x-auto">
+                <table class="min-w-full divide-y divide-border">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-primary" />
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                Member Details
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                Membership
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                Status
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                Current Payment
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="memberTableBody" class="bg-surface divide-y divide-border">
+                        <!-- Table rows will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Mobile/Tablet Card Layout -->
+            <div class="lg:hidden" id="memberCards">
+                <!-- Member cards will be populated by JavaScript -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="hidden text-center py-12">
+                <svg class="mx-auto h-12 w-12 text-text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+                <h3 class="mt-2 text-sm font-medium text-text-primary">No members found</h3>
+                <p class="mt-1 text-sm text-text-secondary">Get started by registering your first member.</p>
+                <div class="mt-6">
+                    <a href="member_registration.html" class="btn-primary px-4 py-2 inline-flex items-center">
+                        <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        </svg>
+                        Add Member
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div id="pagination" class="flex items-center justify-between mt-6 hidden">
+            <div class="flex-1 flex justify-between sm:hidden">
+                <button onclick="previousPage()" class="relative inline-flex items-center px-4 py-2 border border-border text-sm font-medium rounded-md text-text-secondary bg-surface hover:bg-gray-50">
+                    Previous
+                </button>
+                <button onclick="nextPage()" class="ml-3 relative inline-flex items-center px-4 py-2 border border-border text-sm font-medium rounded-md text-text-secondary bg-surface hover:bg-gray-50">
+                    Next
+                </button>
+            </div>
+            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                <div>
+                    <p class="text-sm text-text-secondary">
+                        Showing <span id="showingFrom">1</span> to <span id="showingTo">10</span> of <span id="totalResults">0</span> results
+                    </p>
+                </div>
+                <div>
+                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" id="paginationNav">
+                        <!-- Pagination buttons will be generated by JavaScript -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Context Menu -->
+    <div id="contextMenu" class="fixed bg-surface rounded-lg shadow-modal border border-border py-2 z-50 hidden">
+        <button onclick="viewMemberDetails()" class="block w-full text-left px-4 py-2 text-sm text-text-primary hover:bg-gray-50">
+            View Details
+        </button>
+        <button onclick="viewPaymentHistory()" class="block w-full text-left px-4 py-2 text-sm text-text-primary hover:bg-gray-50">
+            Payment History
+        </button>
+        <button onclick="editMemberDetails()" class="block w-full text-left px-4 py-2 text-sm text-text-primary hover:bg-gray-50">
+            Edit Details
+        </button>
+        <hr class="my-1 border-border" />
+        <button onclick="markPaymentPaid()" class="block w-full text-left px-4 py-2 text-sm text-success hover:bg-gray-50">
+            Mark Payment Paid
+        </button>
+        <button onclick="sendReminder()" class="block w-full text-left px-4 py-2 text-sm text-warning hover:bg-gray-50">
+            Send Reminder
+        </button>
+    </div>
+
+    <!-- Bulk Actions Modal -->
+    <div id="bulkActionsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-surface rounded-lg shadow-modal max-w-md w-full p-6 animate-fade-in">
+            <div class="flex items-center mb-4">
+                <div class="flex-shrink-0">
+                    <svg class="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-lg font-medium text-text-primary">Bulk Actions</h3>
+                    <p class="text-sm text-text-secondary"><span id="selectedCount">0</span> members selected</p>
+                </div>
+            </div>
+            <div class="space-y-3">
+                <button onclick="bulkMarkPaid()" class="w-full btn-primary py-2 flex items-center justify-center">
+                    <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Mark All as Paid
+                </button>
+                <button onclick="bulkSendReminders()" class="w-full btn-secondary py-2 flex items-center justify-center">
+                    <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                    Send Reminders
+                </button>
+                <button onclick="bulkExport()" class="w-full border border-border text-text-secondary py-2 rounded-md hover:bg-gray-50 flex items-center justify-center">
+                    <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Export Selected
+                </button>
+            </div>
+            <div class="flex justify-end mt-6">
+                <button onclick="closeBulkActions()" class="px-4 py-2 border border-border text-text-secondary rounded-md hover:bg-gray-50">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let allMembers = [];
+        let filteredMembers = [];
+        let currentPage = 1;
+        let itemsPerPage = 10;
+        let selectedMembers = new Set();
+        let contextMenuTarget = null;
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            loadMembers();
+            updateSummaryCards();
+            renderMembers();
+            
+            // Add sample data if no members exist
+            if (allMembers.length === 0) {
+                addSampleData();
+            }
+        });
+
+        // Toggle mobile menu
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        // Load members from localStorage
+        function loadMembers() {
+            allMembers = JSON.parse(localStorage.getItem('gymMembers') || '[]');
+            filteredMembers = [...allMembers];
+        }
+
+        // Add sample data for demonstration
+        function addSampleData() {
+            const sampleMembers = [
+                {
+                    id: 1,
+                    admissionNumber: 'GM2025001',
+                    fullName: 'John Smith',
+                    mobileNumber: '(555) 123-4567',
+                    sex: 'Male',
+                    dateOfBirth: '1990-05-15',
+                    bloodGroup: 'O+',
+                    address: '123 Main Street, Anytown, USA',
+                    emergencyContactName: 'Jane Smith',
+                    emergencyRelationship: 'Spouse',
+                    emergencyContactNumber: '(555) 987-6543',
+                    membershipType: 'Monthly',
+                    startDate: '2025-01-01',
+                    endDate: '2025-02-01',
+                    registrationDate: '2025-01-01T00:00:00.000Z',
+                    status: 'Active',
+                    paymentHistory: generateSamplePaymentHistory('2025-01-01', 'Monthly', true)
+                },
+                {
+                    id: 2,
+                    admissionNumber: 'GM2025002',
+                    fullName: 'Sarah Johnson',
+                    mobileNumber: '(555) 234-5678',
+                    sex: 'Female',
+                    dateOfBirth: '1985-08-22',
+                    bloodGroup: 'A+',
+                    address: '456 Oak Avenue, Somewhere, USA',
+                    emergencyContactName: 'Mike Johnson',
+                    emergencyRelationship: 'Spouse',
+                    emergencyContactNumber: '(555) 876-5432',
+                    membershipType: 'Annual',
+                    startDate: '2025-01-15',
+                    endDate: '2026-01-15',
+                    registrationDate: '2025-01-15T00:00:00.000Z',
+                    status: 'Active',
+                    paymentHistory: generateSamplePaymentHistory('2025-01-15', 'Annual', true)
+                },
+                {
+                    id: 3,
+                    admissionNumber: 'GM2025003',
+                    fullName: 'Michael Brown',
+                    mobileNumber: '(555) 345-6789',
+                    sex: 'Male',
+                    dateOfBirth: '1992-12-10',
+                    bloodGroup: 'B+',
+                    address: '789 Pine Street, Elsewhere, USA',
+                    emergencyContactName: 'Robert Brown',
+                    emergencyRelationship: 'Parent',
+                    emergencyContactNumber: '(555) 765-4321',
+                    membershipType: 'Monthly',
+                    startDate: '2025-02-01',
+                    endDate: '2025-03-01',
+                    registrationDate: '2025-02-01T00:00:00.000Z',
+                    status: 'Active',
+                    paymentHistory: generateSamplePaymentHistory('2025-02-01', 'Monthly', false)
+                }
+            ];
+
+            localStorage.setItem('gymMembers', JSON.stringify(sampleMembers));
+            loadMembers();
+            updateSummaryCards();
+            renderMembers();
+        }
+
+        // Generate sample payment history
+        function generateSamplePaymentHistory(startDate, membershipType, firstPaymentPaid) {
+            const history = [];
+            const start = new Date(startDate);
+            const isMonthly = membershipType === 'Monthly';
+            const amount = isMonthly ? 50 : 500;
+            
+            if (isMonthly) {
+                for (let i = 0; i < 12; i++) {
+                    const paymentDate = new Date(start);
+                    paymentDate.setMonth(paymentDate.getMonth() + i);
+                    
+                    history.push({
+                        id: Date.now() + i,
+                        dueDate: paymentDate.toISOString().split('T')[0],
+                        amount: amount,
+                        status: (i === 0 && firstPaymentPaid) ? 'Paid' : 'Pending',
+                        paidDate: (i === 0 && firstPaymentPaid) ? paymentDate.toISOString().split('T')[0] : null,
+                        method: (i === 0 && firstPaymentPaid) ? 'Cash' : null
+                    });
+                }
+            } else {
+                history.push({
+                    id: Date.now(),
+                    dueDate: start.toISOString().split('T')[0],
+                    amount: amount,
+                    status: firstPaymentPaid ? 'Paid' : 'Pending',
+                    paidDate: firstPaymentPaid ? start.toISOString().split('T')[0] : null,
+                    method: firstPaymentPaid ? 'Cash' : null
+                });
+            }
+            
+            return history;
+        }
+
+        // Update summary cards
+        function updateSummaryCards() {
+            const totalMembers = allMembers.filter(m => m.status === 'Active').length;
+            const currentMonth = new Date().getMonth();
+            const currentYear = new Date().getFullYear();
+            
+            let monthlyCollections = 0;
+            let pendingPayments = 0;
+            let expiringMembers = 0;
+            
+            allMembers.forEach(member => {
+                if (member.status === 'Active') {
+                    // Calculate monthly collections
+                    member.paymentHistory.forEach(payment => {
+                        const paymentDate = new Date(payment.dueDate);
+                        if (payment.status === 'Paid' && 
+                            paymentDate.getMonth() === currentMonth && 
+                            paymentDate.getFullYear() === currentYear) {
+                            monthlyCollections += payment.amount;
+                        }
+                    });
+                    
+                    // Count pending payments for current month
+                    const currentMonthPayment = member.paymentHistory.find(payment => {
+                        const paymentDate = new Date(payment.dueDate);
+                        return paymentDate.getMonth() === currentMonth && 
+                               paymentDate.getFullYear() === currentYear;
+                    });
+                    
+                    if (currentMonthPayment && currentMonthPayment.status === 'Pending') {
+                        pendingPayments++;
+                    }
+                    
+                    // Count expiring memberships (within 30 days)
+                    const endDate = new Date(member.endDate);
+                    const today = new Date();
+                    const daysUntilExpiry = Math.ceil((endDate - today) / (1000 * 60 * 60 * 24));
+                    
+                    if (daysUntilExpiry <= 30 && daysUntilExpiry > 0) {
+                        expiringMembers++;
+                    }
+                }
+            });
+            
+            document.getElementById('totalMembers').textContent = totalMembers;
+            document.getElementById('monthlyCollections').textContent = `$${monthlyCollections.toFixed(2)}`;
+            document.getElementById('pendingPayments').textContent = pendingPayments;
+            document.getElementById('expiringMembers').textContent = expiringMembers;
+        }
+
+        // Filter members based on search and filters
+        function filterMembers() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const membershipFilter = document.getElementById('membershipFilter').value;
+            const paymentFilter = document.getElementById('paymentFilter').value;
+            
+            filteredMembers = allMembers.filter(member => {
+                // Search filter
+                const matchesSearch = !searchTerm || 
+                    member.fullName.toLowerCase().includes(searchTerm) ||
+                    member.admissionNumber.toLowerCase().includes(searchTerm) ||
+                    member.mobileNumber.includes(searchTerm);
+                
+                // Membership type filter
+                const matchesMembership = !membershipFilter || member.membershipType === membershipFilter;
+                
+                // Payment status filter
+                let matchesPayment = true;
+                if (paymentFilter) {
+                    const currentMonth = new Date().getMonth();
+                    const currentYear = new Date().getFullYear();
+                    const currentMonthPayment = member.paymentHistory.find(payment => {
+                        const paymentDate = new Date(payment.dueDate);
+                        return paymentDate.getMonth() === currentMonth && 
+                               paymentDate.getFullYear() === currentYear;
+                    });
+                    
+                    if (paymentFilter === 'Paid') {
+                        matchesPayment = currentMonthPayment && currentMonthPayment.status === 'Paid';
+                    } else if (paymentFilter === 'Pending') {
+                        matchesPayment = currentMonthPayment && currentMonthPayment.status === 'Pending';
+                    } else if (paymentFilter === 'Overdue') {
+                        const today = new Date();
+                        matchesPayment = currentMonthPayment && 
+                                       currentMonthPayment.status === 'Pending' && 
+                                       new Date(currentMonthPayment.dueDate) < today;
+                    }
+                }
+                
+                return matchesSearch && matchesMembership && matchesPayment;
+            });
+            
+            currentPage = 1;
+            updateFilterResults();
+            renderMembers();
+        }
+
+        // Reset all filters
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('membershipFilter').value = '';
+            document.getElementById('paymentFilter').value = '';
+            filteredMembers = [...allMembers];
+            currentPage = 1;
+            updateFilterResults();
+            renderMembers();
+        }
+
+        // Update filter results text
+        function updateFilterResults() {
+            const resultsText = document.getElementById('filterResults');
+            if (filteredMembers.length === allMembers.length) {
+                resultsText.textContent = 'Showing all members';
+            } else {
+                resultsText.textContent = `Showing ${filteredMembers.length} of ${allMembers.length} members`;
+            }
+        }
+
+        // Render members table/cards
+        function renderMembers() {
+            const tableBody = document.getElementById('memberTableBody');
+            const memberCards = document.getElementById('memberCards');
+            const emptyState = document.getElementById('emptyState');
+            const pagination = document.getElementById('pagination');
+            
+            if (filteredMembers.length === 0) {
+                tableBody.innerHTML = '';
+                memberCards.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                pagination.classList.add('hidden');
+                return;
+            }
+            
+            emptyState.classList.add('hidden');
+            
+            // Calculate pagination
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage, filteredMembers.length);
+            const pageMembers = filteredMembers.slice(startIndex, endIndex);
+            
+            // Render desktop table
+            tableBody.innerHTML = pageMembers.map(member => {
+                const currentMonthPayment = getCurrentMonthPayment(member);
+                const paymentStatus = getPaymentStatus(currentMonthPayment);
+                
+                return `
+                    <tr class="hover:bg-gray-50 transition-colors" data-member-id="${member.id}" oncontextmenu="showContextMenu(event, ${member.id})">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <input type="checkbox" class="form-checkbox h-4 w-4 text-primary member-checkbox" 
+                                value="${member.id}" onchange="updateBulkSelection()">
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10">
+                                    <div class="h-10 w-10 rounded-full bg-primary-100 flex items-center justify-center">
+                                        <span class="text-sm font-medium text-primary">${member.fullName.charAt(0)}</span>
+                                    </div>
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-text-primary">${member.fullName}</div>
+                                    <div class="text-sm text-text-secondary">${member.admissionNumber}</div>
+                                    <div class="text-sm text-text-secondary">${member.mobileNumber}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-text-primary">${member.membershipType}</div>
+                            <div class="text-sm text-text-secondary">Expires: ${new Date(member.endDate).toLocaleDateString()}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadgeClass(member.status)}">
+                                ${member.status}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <span class="status-dot ${paymentStatus.class} mr-2"></span>
+                                <span class="text-sm font-medium ${paymentStatus.textClass}">${paymentStatus.text}</span>
+                            </div>
+                            ${currentMonthPayment ? `<div class="text-xs text-text-secondary">$${currentMonthPayment.amount}</div>` : ''}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <div class="flex space-x-2">
+                                ${currentMonthPayment && currentMonthPayment.status === 'Pending' ? 
+                                    `<button onclick="markPaymentPaid(${member.id})" class="btn-primary px-3 py-1 text-xs">Mark Paid</button>` : 
+                                    `<span class="text-success text-xs">✓ Paid</span>`
+                                }
+                                <button onclick="viewMemberDetails(${member.id})" class="text-primary hover:text-primary-700 text-xs">View</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+            
+            // Render mobile cards
+            memberCards.innerHTML = pageMembers.map(member => {
+                const currentMonthPayment = getCurrentMonthPayment(member);
+                const paymentStatus = getPaymentStatus(currentMonthPayment);
+                
+                return `
+                    <div class="p-4 border-b border-border" data-member-id="${member.id}">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-primary member-checkbox mr-3" 
+                                    value="${member.id}" onchange="updateBulkSelection()">
+                                <div class="h-10 w-10 rounded-full bg-primary-100 flex items-center justify-center">
+                                    <span class="text-sm font-medium text-primary">${member.fullName.charAt(0)}</span>
+                                </div>
+                                <div class="ml-3">
+                                    <div class="text-sm font-medium text-text-primary">${member.fullName}</div>
+                                    <div class="text-xs text-text-secondary">${member.admissionNumber}</div>
+                                </div>
+                            </div>
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusBadgeClass(member.status)}">
+                                ${member.status}
+                            </span>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-3 text-sm">
+                            <div>
+                                <span class="text-text-secondary">Membership:</span>
+                                <span class="text-text-primary ml-1">${member.membershipType}</span>
+                            </div>
+                            <div>
+                                <span class="text-text-secondary">Mobile:</span>
+                                <span class="text-text-primary ml-1">${member.mobileNumber}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <span class="status-dot ${paymentStatus.class} mr-2"></span>
+                                <span class="text-sm font-medium ${paymentStatus.textClass}">${paymentStatus.text}</span>
+                                ${currentMonthPayment ? `<span class="text-xs text-text-secondary ml-2">($${currentMonthPayment.amount})</span>` : ''}
+                            </div>
+                            <div class="flex space-x-2">
+                                ${currentMonthPayment && currentMonthPayment.status === 'Pending' ? 
+                                    `<button onclick="markPaymentPaid(${member.id})" class="btn-primary px-3 py-1 text-xs">Mark Paid</button>` : 
+                                    `<span class="text-success text-xs">✓ Paid</span>`
+                                }
+                                <button onclick="viewMemberDetails(${member.id})" class="text-primary hover:text-primary-700 text-xs">View</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Update pagination
+            updatePagination();
+        }
+
+        // Get current month payment for a member
+        function getCurrentMonthPayment(member) {
+            const currentMonth = new Date().getMonth();
+            const currentYear = new Date().getFullYear();
+            
+            return member.paymentHistory.find(payment => {
+                const paymentDate = new Date(payment.dueDate);
+                return paymentDate.getMonth() === currentMonth && 
+                       paymentDate.getFullYear() === currentYear;
+            });
+        }
+
+        // Get payment status with styling
+        function getPaymentStatus(payment) {
+            if (!payment) {
+                return { text: 'No Payment Due', class: 'success', textClass: 'text-success' };
+            }
+            
+            if (payment.status === 'Paid') {
+                return { text: 'Paid', class: 'success', textClass: 'text-success' };
+            }
+            
+            const today = new Date();
+            const dueDate = new Date(payment.dueDate);
+            
+            if (dueDate < today) {
+                return { text: 'Overdue', class: 'error', textClass: 'text-error' };
+            } else {
+                return { text: 'Pending', class: 'warning', textClass: 'text-warning' };
+            }
+        }
+
+        // Get status badge class
+        function getStatusBadgeClass(status) {
+            switch (status) {
+                case 'Active':
+                    return 'bg-success-100 text-success-600';
+                case 'Inactive':
+                    return 'bg-gray-100 text-gray-600';
+                case 'Suspended':
+                    return 'bg-error-100 text-error-600';
+                default:
+                    return 'bg-gray-100 text-gray-600';
+            }
+        }
+
+        // Mark payment as paid
+        function markPaymentPaid(memberId) {
+            const member = allMembers.find(m => m.id === memberId);
+            if (!member) return;
+            
+            const currentMonthPayment = getCurrentMonthPayment(member);
+            if (currentMonthPayment && currentMonthPayment.status === 'Pending') {
+                currentMonthPayment.status = 'Paid';
+                currentMonthPayment.paidDate = new Date().toISOString().split('T')[0];
+                currentMonthPayment.method = 'Cash';
+                
+                // Update localStorage
+                localStorage.setItem('gymMembers', JSON.stringify(allMembers));
+                
+                // Refresh display
+                updateSummaryCards();
+                renderMembers();
+                
+                // Show success feedback
+                showNotification('Payment marked as paid successfully!', 'success');
+            }
+        }
+
+        // Show context menu
+        function showContextMenu(event, memberId) {
+            event.preventDefault();
+            contextMenuTarget = memberId;
+            
+            const contextMenu = document.getElementById('contextMenu');
+            contextMenu.style.left = event.pageX + 'px';
+            contextMenu.style.top = event.pageY + 'px';
+            contextMenu.classList.remove('hidden');
+            
+            // Hide context menu when clicking elsewhere
+            document.addEventListener('click', hideContextMenu, { once: true });
+        }
+
+        // Hide context menu
+        function hideContextMenu() {
+            document.getElementById('contextMenu').classList.add('hidden');
+            contextMenuTarget = null;
+        }
+
+        // Context menu actions
+        function viewMemberDetails(memberId = contextMenuTarget) {
+            if (memberId) {
+                // Show member details in a modal instead of navigating
+                showMemberDetailsModal(memberId);
+            }
+            hideContextMenu();
+        }
+
+        function viewPaymentHistory(memberId = contextMenuTarget) {
+            if (memberId) {
+                // Show payment history in a modal instead of navigating
+                showPaymentHistoryModal(memberId);
+            }
+            hideContextMenu();
+        }
+
+        function editMemberDetails(memberId = contextMenuTarget) {
+            if (memberId) {
+                // Show edit form in a modal instead of navigating
+                showEditMemberModal(memberId);
+            }
+            hideContextMenu();
+        }
+
+        function sendReminder(memberId = contextMenuTarget) {
+            if (memberId) {
+                const member = allMembers.find(m => m.id === memberId);
+                if (member) {
+                    showNotification(`Payment reminder sent to ${member.fullName}`, 'success');
+                }
+            }
+            hideContextMenu();
+        }
+
+        // Bulk selection functions
+        function toggleBulkSelect() {
+            const selectAll = document.getElementById('bulkSelectAll');
+            const checkboxes = document.querySelectorAll('.member-checkbox');
+            
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAll.checked;
+            });
+            
+            updateBulkSelection();
+        }
+
+        function updateBulkSelection() {
+            const checkboxes = document.querySelectorAll('.member-checkbox:checked');
+            selectedMembers.clear();
+            
+            checkboxes.forEach(checkbox => {
+                selectedMembers.add(parseInt(checkbox.value));
+            });
+            
+            const bulkActions = document.getElementById('bulkActions');
+            if (selectedMembers.size > 0) {
+                bulkActions.classList.remove('hidden');
+            } else {
+                bulkActions.classList.add('hidden');
+            }
+            
+            // Update select all checkbox
+            const selectAll = document.getElementById('bulkSelectAll');
+            const allCheckboxes = document.querySelectorAll('.member-checkbox');
+            selectAll.checked = allCheckboxes.length > 0 && checkboxes.length === allCheckboxes.length;
+        }
+
+        // Show bulk actions modal
+        function showBulkActions() {
+            document.getElementById('selectedCount').textContent = selectedMembers.size;
+            document.getElementById('bulkActionsModal').classList.remove('hidden');
+        }
+
+        function closeBulkActions() {
+            document.getElementById('bulkActionsModal').classList.add('hidden');
+        }
+
+        // Bulk actions
+        function bulkMarkPaid() {
+            let updatedCount = 0;
+            
+            selectedMembers.forEach(memberId => {
+                const member = allMembers.find(m => m.id === memberId);
+                if (member) {
+                    const currentMonthPayment = getCurrentMonthPayment(member);
+                    if (currentMonthPayment && currentMonthPayment.status === 'Pending') {
+                        currentMonthPayment.status = 'Paid';
+                        currentMonthPayment.paidDate = new Date().toISOString().split('T')[0];
+                        currentMonthPayment.method = 'Cash';
+                        updatedCount++;
+                    }
+                }
+            });
+            
+            if (updatedCount > 0) {
+                localStorage.setItem('gymMembers', JSON.stringify(allMembers));
+                updateSummaryCards();
+                renderMembers();
+                showNotification(`${updatedCount} payments marked as paid`, 'success');
+            }
+            
+            closeBulkActions();
+            clearBulkSelection();
+        }
+
+        function bulkSendReminders() {
+            showNotification(`Reminders sent to ${selectedMembers.size} members`, 'success');
+            closeBulkActions();
+            clearBulkSelection();
+        }
+
+        function bulkExport() {
+            const selectedMemberData = allMembers.filter(m => selectedMembers.has(m.id));
+            exportMemberData(selectedMemberData);
+            closeBulkActions();
+            clearBulkSelection();
+        }
+
+        function clearBulkSelection() {
+            selectedMembers.clear();
+            document.querySelectorAll('.member-checkbox').forEach(cb => cb.checked = false);
+            document.getElementById('bulkSelectAll').checked = false;
+            document.getElementById('bulkActions').classList.add('hidden');
+        }
+
+        // Export functionality
+        function exportData() {
+            exportMemberData(filteredMembers);
+        }
+
+        function exportMemberData(members) {
+            const csvContent = generateCSV(members);
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `gym_members_${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            showNotification('Member data exported successfully', 'success');
+        }
+
+        function generateCSV(members) {
+            const headers = [
+                'Admission Number', 'Full Name', 'Mobile Number', 'Sex', 'Date of Birth',
+                'Blood Group', 'Address', 'Emergency Contact', 'Emergency Relationship',
+                'Emergency Number', 'Membership Type', 'Start Date', 'End Date', 'Status'
+            ];
+            
+            const rows = members.map(member => [
+                member.admissionNumber,
+                member.fullName,
+                member.mobileNumber,
+                member.sex,
+                member.dateOfBirth,
+                member.bloodGroup || '',
+                member.address,
+                member.emergencyContactName,
+                member.emergencyRelationship,
+                member.emergencyContactNumber,
+                member.membershipType,
+                member.startDate,
+                member.endDate,
+                member.status
+            ]);
+            
+            const csvContent = [headers, ...rows]
+                .map(row => row.map(field => `"${field}"`).join(','))
+                .join('\n');
+            
+            return csvContent;
+        }
+
+        // Pagination functions
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredMembers.length / itemsPerPage);
+            const pagination = document.getElementById('pagination');
+            
+            if (totalPages <= 1) {
+                pagination.classList.add('hidden');
+                return;
+            }
+            
+            pagination.classList.remove('hidden');
+            
+            // Update showing text
+            const startIndex = (currentPage - 1) * itemsPerPage + 1;
+            const endIndex = Math.min(currentPage * itemsPerPage, filteredMembers.length);
+            
+            document.getElementById('showingFrom').textContent = startIndex;
+            document.getElementById('showingTo').textContent = endIndex;
+            document.getElementById('totalResults').textContent = filteredMembers.length;
+            
+            // Generate pagination buttons
+            const paginationNav = document.getElementById('paginationNav');
+            let paginationHTML = '';
+            
+            // Previous button
+            paginationHTML += `
+                <button onclick="previousPage()" ${currentPage === 1 ? 'disabled' : ''} 
+                    class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-border bg-surface text-sm font-medium text-text-secondary hover:bg-gray-50 ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}">
+                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                </button>
+            `;
+            
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+                    paginationHTML += `
+                        <button onclick="goToPage(${i})" 
+                            class="relative inline-flex items-center px-4 py-2 border border-border text-sm font-medium ${i === currentPage ? 'bg-primary text-white' : 'bg-surface text-text-secondary hover:bg-gray-50'}">
+                            ${i}
+                        </button>
+                    `;
+                } else if (i === currentPage - 3 || i === currentPage + 3) {
+                    paginationHTML += `
+                        <span class="relative inline-flex items-center px-4 py-2 border border-border bg-surface text-sm font-medium text-text-secondary">
+                            ...
+                        </span>
+                    `;
+                }
+            }
+            
+            // Next button
+            paginationHTML += `
+                <button onclick="nextPage()" ${currentPage === totalPages ? 'disabled' : ''} 
+                    class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-border bg-surface text-sm font-medium text-text-secondary hover:bg-gray-50 ${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''}">
+                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                </button>
+            `;
+            
+            paginationNav.innerHTML = paginationHTML;
+        }
+
+        function previousPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                renderMembers();
+            }
+        }
+
+        function nextPage() {
+            const totalPages = Math.ceil(filteredMembers.length / itemsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderMembers();
+            }
+        }
+
+function goToPage(page) {
+currentPage = page;
+renderMembers();
+}
+
+        // Placeholder functions for modal implementations
+        function showMemberDetailsModal(memberId) {
+            const member = allMembers.find(m => m.id === memberId);
+            if (member) {
+                alert(`Member Details:\nName: ${member.fullName}\nEmail: ${member.email}\nPhone: ${member.phone}\nMembership: ${member.membershipType}\nStatus: ${member.status}`);
+            }
+        }
+
+        function showPaymentHistoryModal(memberId) {
+            const member = allMembers.find(m => m.id === memberId);
+            if (member) {
+                alert(`Payment History for ${member.fullName}:\nLast Payment: ${member.lastPayment}\nNext Due: ${member.nextDue}\nStatus: ${member.paymentStatus}`);
+            }
+        }
+
+        function showEditMemberModal(memberId) {
+            const member = allMembers.find(m => m.id === memberId);
+            if (member) {
+                const newName = prompt('Edit Member Name:', member.fullName);
+                const newEmail = prompt('Edit Email:', member.email);
+                if (newName && newEmail) {
+                    member.fullName = newName;
+                    member.email = newEmail;
+                    showNotification(`${member.fullName} updated successfully!`, 'success');
+                    renderMembers();
+                }
+            }
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl/Cmd + F for search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+                e.preventDefault();
+                document.getElementById('searchInput').focus();
+            }
+            
+            // Escape to close modals
+            if (e.key === 'Escape') {
+                hideContextMenu();
+                closeBulkActions();
+            }
+        });
+
+        // Click outside to hide context menu
+        document.addEventListener('click', function(e) {
+            if (!document.getElementById('contextMenu').contains(e.target)) {
+                hideContextMenu();
+            }
+        });
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>

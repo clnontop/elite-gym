@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Elite Gym Dashboard</title>
+    <link rel="stylesheet" href="css/main.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1b2e 50%, #16213e 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .redirect-container {
+            text-align: center;
+            background: rgba(26, 27, 46, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            max-width: 450px;
+            width: 90%;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+        
+        .logo-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #f7fafc;
+            margin-bottom: 0.5rem;
+        }
+        
+        .logo-subtitle {
+            color: #a0aec0;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(102, 126, 234, 0.2);
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .redirect-message {
+            color: #f7fafc;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+        
+        .manual-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .manual-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .footer-text {
+            margin-top: 2rem;
+            color: #a0aec0;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="redirect-container">
+        <div class="logo-icon">
+            <svg width="40" height="40" fill="#575555" viewBox="0 0 24 24">
+                <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
+                <path d="M8 11h8v2H8z"/>
+                <path d="M10 7h4v2h-4z"/>
+                <path d="M10 15h4v2h-4z"/>
+            </svg>
+        </div>
+        <div class="logo">Elite Gym</div>
+        <div class="logo-subtitle">Professional Gym Management</div>
+        <div class="loading-spinner"></div>
+        <div class="redirect-message">
+            Redirecting to Admin Login...
+        </div>
+        <a href="login.html" class="manual-link">
+            Continue to Login
+        </a>
+        <div class="footer-text">
+            Secure access required
+        </div>
+    </div>
+
+    <script>
+        // Auto-redirect after 2 seconds
+        setTimeout(function() {
+            window.location.href = 'login.html';
+        }, 2000);
+        
+        // Fallback redirect on page load
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
+                    window.location.href = 'login.html';
+                }
+            }, 2500);
+        });
+    </script>
+<script id="dhws-dataInjector" src="/public/dhws-data-injector.js"></script>
+</body>
+</html>
