@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="../css/main.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <script src="../js/auth.js"></script>
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/realtime-sync.js"></script>
     <style>
         .header-gradient {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -637,44 +639,58 @@
                     fullName: formData.get('fullName'),
                     mobileNumber: formData.get('mobileNumber'),
                     sex: formData.get('sex'),
-                    dateOfBirth: formData.get('dateOfBirth'),
-                    bloodGroup: formData.get('bloodGroup'),
-                    address: formData.get('address'),
-                    emergencyContactName: formData.get('emergencyContactName'),
-                    emergencyRelationship: formData.get('emergencyRelationship'),
-                    emergencyContactNumber: formData.get('emergencyContactNumber'),
                     membershipType: formData.get('membershipType'),
                     startDate: formData.get('startDate'),
-                    endDate: formData.get('endDate'),
-                    registrationDate: new Date().toISOString(),
-                    status: 'Active',
-                    paymentHistory: initializePaymentHistory(formData.get('startDate'), formData.get('membershipType'))
+                    registrationDate: new Date().toISOString().split('T')[0],
+                    status: 'Active'
                 };
+
+                // Sync with real-time database
+                if (window.realtimeSync) {
+                    window.realtimeSync.addMember(memberData);
+                }
+
+                // Show success message
+                showSuccessMessage('Member registered successfully and synced across all devices!');
                 
-                // Save to localStorage
-                const members = JSON.parse(localStorage.getItem('gymMembers') || '[]');
-                members.push(memberData);
-                localStorage.setItem('gymMembers', JSON.stringify(members));
-                
-                // Store current member for success modal
-                localStorage.setItem('currentNewMember', JSON.stringify(memberData));
+                // Reset form
+                resetForm();
                 
                 // Reset loading state
                 submitButton.disabled = false;
                 submitText.textContent = 'Register Member';
                 loadingIcon.classList.add('hidden');
-                
-                // Show success modal
-                document.getElementById('successModal').classList.remove('hidden');
             }, 1500);
         });
 
-        // Initialize payment history
-        function initializePaymentHistory(startDate, membershipType) {
+        // Reset form
+        function resetForm() {
+            document.getElementById('memberRegistrationForm').reset();
+            document.getElementById('membershipSummary').classList.add('hidden');
+            document.querySelectorAll('.error-message').forEach(msg => {
+                msg.classList.add('hidden');
+                msg.textContent = '';
+            });
+            
+            // Reset radio button styling
+            document.querySelectorAll('.radio-indicator').forEach(indicator => {
+                indicator.querySelector('div').classList.add('hidden');
+                indicator.classList.remove('border-primary');
+                indicator.classList.add('border-gray-300');
+            });
+            
+            // Set default values
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('startDate').value = today;
+            generateAdmissionNumber();
+        }
+
+        // Generate payment history
+        function generatePaymentHistory(membershipType, startDate) {
             const history = [];
             const start = new Date(startDate);
             const isMonthly = membershipType === 'Monthly';
-            const amount = isMonthly ? 50 : 500;
+            const amount = isMonthly ? 600 : 6000;
             
             if (isMonthly) {
                 // Create 12 monthly payments
