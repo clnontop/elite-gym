@@ -6,6 +6,10 @@
     <title>Member Registration - Elite Gym Dashboard</title>
     <link rel="stylesheet" href="../css/main.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    
     <script src="../js/auth.js"></script>
     <script src="../js/firebase-config.js"></script>
     <script src="../js/realtime-sync.js"></script>
@@ -176,7 +180,7 @@
                             <label for="mobileNumber" class="block text-sm font-medium text-text-primary mb-2">
                                 Mobile Number <span class="text-error">*</span>
                             </label>
-                            <input type="tel" id="mobileNumber" name="mobileNumber" required class="form-input w-full" placeholder="(555) 123-4567" />
+                            <input type="tel" id="mobileNumber" name="mobileNumber" required class="form-input w-full" placeholder="+91 98765 43210" />
                             <div class="error-message hidden text-error text-sm mt-1"></div>
                         </div>
 
@@ -227,7 +231,7 @@
                         <label for="address" class="block text-sm font-medium text-text-primary mb-2">
                             Address <span class="text-error">*</span>
                         </label>
-                        <textarea id="address" name="address" rows="3" required class="form-input w-full resize-none" placeholder="Enter complete address"></textarea>
+                        <textarea id="address" name="address" rows="3" required class="form-input w-full resize-none" placeholder="Enter complete address (e.g., A-123, Sector 15, Noida, Uttar Pradesh 201301)"></textarea>
                         <div class="error-message hidden text-error text-sm mt-1"></div>
                     </div>
                 </div>
@@ -273,7 +277,7 @@
                             <label for="emergencyContactNumber" class="block text-sm font-medium text-text-primary mb-2">
                                 Contact Number <span class="text-error">*</span>
                             </label>
-                            <input type="tel" id="emergencyContactNumber" name="emergencyContactNumber" required class="form-input w-full" placeholder="(555) 987-6543" />
+                            <input type="tel" id="emergencyContactNumber" name="emergencyContactNumber" required class="form-input w-full" placeholder="+91 98765 12345" />
                             <div class="error-message hidden text-error text-sm mt-1"></div>
                         </div>
                     </div>
@@ -439,7 +443,7 @@
         // Generate admission number
         function generateAdmissionNumber() {
             const year = new Date().getFullYear();
-            const members = JSON.parse(localStorage.getItem('gymMembers') || '[]');
+            const members = JSON.parse(localStorage.getItem('elite_gym_members') || '[]');
             const nextNumber = (members.length + 1).toString().padStart(3, '0');
             document.getElementById('admissionNumber').value = `GM${year}${nextNumber}`;
         }
@@ -473,7 +477,7 @@
                 const isMonthly = membershipType === 'Monthly';
                 document.getElementById('summaryType').textContent = membershipType;
                 document.getElementById('summaryDuration').textContent = isMonthly ? '1 Month' : '12 Months';
-                document.getElementById('summaryCost').textContent = isMonthly ? '$50.00' : '$500.00';
+                document.getElementById('summaryCost').textContent = isMonthly ? '₹600' : '₹6,000';
                 
                 const startDate = document.getElementById('startDate').value;
                 if (startDate) {
@@ -561,7 +565,7 @@
             
             // Check for duplicate admission number
             const admissionNumber = document.getElementById('admissionNumber').value;
-            const members = JSON.parse(localStorage.getItem('gymMembers') || '[]');
+            const members = JSON.parse(localStorage.getItem('elite_gym_members') || '[]');
             if (members.some(member => member.admissionNumber === admissionNumber)) {
                 showError('admissionNumber', 'This admission number already exists');
                 isValid = false;
@@ -639,22 +643,33 @@
                     fullName: formData.get('fullName'),
                     mobileNumber: formData.get('mobileNumber'),
                     sex: formData.get('sex'),
+                    dateOfBirth: formData.get('dateOfBirth'),
+                    bloodGroup: formData.get('bloodGroup'),
+                    address: formData.get('address'),
+                    emergencyContactName: formData.get('emergencyContactName'),
+                    emergencyRelationship: formData.get('emergencyRelationship'),
+                    emergencyContactNumber: formData.get('emergencyContactNumber'),
                     membershipType: formData.get('membershipType'),
                     startDate: formData.get('startDate'),
+                    endDate: document.getElementById('endDate').value,
                     registrationDate: new Date().toISOString().split('T')[0],
-                    status: 'Active'
+                    status: 'Active',
+                    paymentHistory: generatePaymentHistory(formData.get('membershipType'), formData.get('startDate'))
                 };
+
+                // Save to localStorage
+                const members = JSON.parse(localStorage.getItem('elite_gym_members') || '[]');
+                members.push(memberData);
+                localStorage.setItem('elite_gym_members', JSON.stringify(members));
+                localStorage.setItem('currentNewMember', JSON.stringify(memberData));
 
                 // Sync with real-time database
                 if (window.realtimeSync) {
                     window.realtimeSync.addMember(memberData);
                 }
 
-                // Show success message
-                showSuccessMessage('Member registered successfully and synced across all devices!');
-                
-                // Reset form
-                resetForm();
+                // Show success modal
+                document.getElementById('successModal').classList.remove('hidden');
                 
                 // Reset loading state
                 submitButton.disabled = false;
@@ -738,11 +753,11 @@
                 memberData.paymentHistory[0].method = 'Cash';
                 
                 // Update in storage
-                const members = JSON.parse(localStorage.getItem('gymMembers') || '[]');
+                const members = JSON.parse(localStorage.getItem('elite_gym_members') || '[]');
                 const memberIndex = members.findIndex(m => m.id === memberData.id);
                 if (memberIndex !== -1) {
                     members[memberIndex] = memberData;
-                    localStorage.setItem('gymMembers', JSON.stringify(members));
+                    localStorage.setItem('elite_gym_members', JSON.stringify(members));
                 }
                 
                 // Show confirmation

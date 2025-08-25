@@ -6,6 +6,10 @@
     <title>Member Management Dashboard - Elite Gym Dashboard</title>
     <link rel="stylesheet" href="../css/main.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    
     <script src="../js/auth.js"></script>
     <script src="../js/firebase-config.js"></script>
     <script src="../js/realtime-sync.js"></script>
@@ -456,11 +460,13 @@
         // Initialize dashboard
         document.addEventListener('DOMContentLoaded', function() {
             loadMembers();
+            console.log('After loadMembers - allMembers.length:', allMembers.length);
             updateSummaryCards();
             renderMembers();
             
             // Add sample data if no members exist
             if (allMembers.length === 0) {
+                console.log('No members found, adding sample data');
                 addSampleData();
             }
         });
@@ -473,7 +479,11 @@
 
         // Load members from localStorage
         function loadMembers() {
-            allMembers = JSON.parse(localStorage.getItem('gymMembers') || '[]');
+            const storedMembers = localStorage.getItem('elite_gym_members');
+            console.log('Raw localStorage data:', storedMembers);
+            allMembers = JSON.parse(storedMembers || '[]');
+            console.log('Loaded members:', allMembers);
+            console.log('Number of members:', allMembers.length);
             filteredMembers = [...allMembers];
         }
 
@@ -539,7 +549,7 @@
                 }
             ];
 
-            localStorage.setItem('gymMembers', JSON.stringify(sampleMembers));
+            localStorage.setItem('elite_gym_members', JSON.stringify(sampleMembers));
             loadMembers();
             updateSummaryCards();
             renderMembers();
@@ -700,12 +710,14 @@
 
         // Render members table/cards
         function renderMembers() {
+            console.log('renderMembers called - filteredMembers.length:', filteredMembers.length);
             const tableBody = document.getElementById('memberTableBody');
             const memberCards = document.getElementById('memberCards');
             const emptyState = document.getElementById('emptyState');
             const pagination = document.getElementById('pagination');
             
             if (filteredMembers.length === 0) {
+                console.log('No filtered members, showing empty state');
                 tableBody.innerHTML = '';
                 memberCards.innerHTML = '';
                 emptyState.classList.remove('hidden');
@@ -889,7 +901,7 @@
                 currentMonthPayment.method = 'Cash';
                 
                 // Update localStorage
-                localStorage.setItem('gymMembers', JSON.stringify(allMembers));
+                localStorage.setItem('elite_gym_members', JSON.stringify(allMembers));
                 
                 // Refresh display
                 updateSummaryCards();
@@ -923,8 +935,13 @@
         // Context menu actions
         function viewMemberDetails(memberId = contextMenuTarget) {
             if (memberId) {
-                // Show member details in a modal instead of navigating
-                showMemberDetailsModal(memberId);
+                // Store member data in localStorage for the profile page
+                const member = allMembers.find(m => m.id === memberId);
+                if (member) {
+                    localStorage.setItem('currentMemberProfile', JSON.stringify(member));
+                    // Navigate to profile page
+                    window.location.href = 'member_profile_details.html';
+                }
             }
             hideContextMenu();
         }
@@ -1016,7 +1033,7 @@
             });
             
             if (updatedCount > 0) {
-                localStorage.setItem('gymMembers', JSON.stringify(allMembers));
+                localStorage.setItem('elite_gym_members', JSON.stringify(allMembers));
                 updateSummaryCards();
                 renderMembers();
                 showNotification(`${updatedCount} payments marked as paid`, 'success');
@@ -1225,6 +1242,39 @@ renderMembers();
                 closeBulkActions();
             }
         });
+
+        // Show notification function
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 px-4 py-2 rounded-md shadow-lg text-white transition-all duration-300 transform translate-x-0 opacity-100`;
+            
+            switch(type) {
+                case 'success':
+                    notification.classList.add('bg-green-500');
+                    break;
+                case 'error':
+                    notification.classList.add('bg-red-500');
+                    break;
+                case 'warning':
+                    notification.classList.add('bg-yellow-500');
+                    break;
+                default:
+                    notification.classList.add('bg-blue-500');
+            }
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                notification.classList.add('translate-x-full', 'opacity-0');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
 
         // Click outside to hide context menu
         document.addEventListener('click', function(e) {

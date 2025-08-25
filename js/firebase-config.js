@@ -9,19 +9,24 @@ const firebaseConfig = {
     appId: "your-app-id-here"
 };
 
-// Initialize Firebase
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-import { getDatabase, ref, push, set, onValue, remove } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+// Initialize Firebase (using CDN version for compatibility)
+let app, database;
 
-const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
+// Check if Firebase is available
+if (typeof firebase !== 'undefined') {
+    app = firebase.initializeApp(firebaseConfig);
+    database = firebase.database();
+} else {
+    console.warn('Firebase not loaded, using localStorage fallback');
+}
 
 // Database helper functions
 class FirebaseDB {
     // Members
     static addMember(memberData) {
-        const membersRef = ref(database, 'members');
-        return push(membersRef, {
+        if (!database) return Promise.resolve();
+        const membersRef = database.ref('members');
+        return membersRef.push({
             ...memberData,
             createdAt: Date.now(),
             updatedAt: Date.now()
@@ -29,21 +34,24 @@ class FirebaseDB {
     }
 
     static updateMember(memberId, memberData) {
-        const memberRef = ref(database, `members/${memberId}`);
-        return set(memberRef, {
+        if (!database) return Promise.resolve();
+        const memberRef = database.ref(`members/${memberId}`);
+        return memberRef.set({
             ...memberData,
             updatedAt: Date.now()
         });
     }
 
     static deleteMember(memberId) {
-        const memberRef = ref(database, `members/${memberId}`);
-        return remove(memberRef);
+        if (!database) return Promise.resolve();
+        const memberRef = database.ref(`members/${memberId}`);
+        return memberRef.remove();
     }
 
     static onMembersChange(callback) {
-        const membersRef = ref(database, 'members');
-        return onValue(membersRef, (snapshot) => {
+        if (!database) return;
+        const membersRef = database.ref('members');
+        return membersRef.on('value', (snapshot) => {
             const data = snapshot.val();
             const members = data ? Object.keys(data).map(key => ({
                 id: key,
@@ -55,16 +63,18 @@ class FirebaseDB {
 
     // Payments
     static addPayment(paymentData) {
-        const paymentsRef = ref(database, 'payments');
-        return push(paymentsRef, {
+        if (!database) return Promise.resolve();
+        const paymentsRef = database.ref('payments');
+        return paymentsRef.push({
             ...paymentData,
             createdAt: Date.now()
         });
     }
 
     static onPaymentsChange(callback) {
-        const paymentsRef = ref(database, 'payments');
-        return onValue(paymentsRef, (snapshot) => {
+        if (!database) return;
+        const paymentsRef = database.ref('payments');
+        return paymentsRef.on('value', (snapshot) => {
             const data = snapshot.val();
             const payments = data ? Object.keys(data).map(key => ({
                 id: key,
@@ -76,17 +86,19 @@ class FirebaseDB {
 
     // Activity Log
     static logActivity(activity) {
-        const activityRef = ref(database, 'activities');
-        return push(activityRef, {
+        if (!database) return Promise.resolve();
+        const activityRef = database.ref('activities');
+        return activityRef.push({
             ...activity,
             timestamp: Date.now(),
-            user: localStorage.getItem('gymflow_admin_user') || 'Admin'
+            user: localStorage.getItem('gymflow_admin_username') || 'Admin'
         });
     }
 
     static onActivitiesChange(callback) {
-        const activitiesRef = ref(database, 'activities');
-        return onValue(activitiesRef, (snapshot) => {
+        if (!database) return;
+        const activitiesRef = database.ref('activities');
+        return activitiesRef.on('value', (snapshot) => {
             const data = snapshot.val();
             const activities = data ? Object.keys(data).map(key => ({
                 id: key,
