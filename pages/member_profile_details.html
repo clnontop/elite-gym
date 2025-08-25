@@ -1030,12 +1030,44 @@
         document.getElementById('editForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // In a real app, this would save the changes
+            // Get current member data
+            const memberData = localStorage.getItem('currentMemberProfile');
+            if (!memberData) return;
+            
+            const member = JSON.parse(memberData);
+            
+            // Get form data
+            const formInputs = document.querySelectorAll('#editForm input, #editForm select, #editForm textarea');
+            const updatedMember = { ...member };
+            
+            // Update member data with form values
+            updatedMember.fullName = formInputs[0].value;
+            updatedMember.mobileNumber = formInputs[1].value;
+            updatedMember.sex = formInputs[2].value;
+            updatedMember.dateOfBirth = formInputs[3].value;
+            updatedMember.bloodGroup = formInputs[4].value;
+            updatedMember.address = formInputs[5].value;
+            updatedMember.emergencyContactName = formInputs[6].value;
+            updatedMember.emergencyContactNumber = formInputs[7].value;
+            updatedMember.emergencyRelationship = formInputs[8].value;
+            
+            // Update localStorage with edited member data
+            localStorage.setItem('currentMemberProfile', JSON.stringify(updatedMember));
+            
+            // Update the main members list in localStorage
+            const allMembers = JSON.parse(localStorage.getItem('elite_gym_members') || '[]');
+            const memberIndex = allMembers.findIndex(m => m.id === member.id);
+            if (memberIndex !== -1) {
+                allMembers[memberIndex] = updatedMember;
+                localStorage.setItem('elite_gym_members', JSON.stringify(allMembers));
+            }
+            
+            // Show success message
             alert('Profile updated successfully!');
             closeEditModal();
             
-            // Reload page to show updated data
-            location.reload();
+            // Reload member data to show updated information
+            loadMemberData();
         });
 
         // Load member data from localStorage
