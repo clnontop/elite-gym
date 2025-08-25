@@ -921,7 +921,63 @@
 
         // Quick action functions
         function editProfile() {
+            // Load current member data into edit form
+            const memberData = localStorage.getItem('currentMemberProfile');
+            if (memberData) {
+                const member = JSON.parse(memberData);
+                populateEditForm(member);
+            }
             document.getElementById('editModal').classList.remove('hidden');
+        }
+
+        // Populate edit form with member data
+        function populateEditForm(member) {
+            // Update form fields with member data
+            document.querySelector('#editForm input[type="text"]').value = member.fullName || '';
+            document.querySelector('#editForm input[type="tel"]').value = member.mobileNumber || '';
+            
+            // Set sex dropdown
+            const sexSelect = document.querySelector('#editForm select');
+            if (sexSelect && member.sex) {
+                sexSelect.value = member.sex;
+            }
+            
+            // Set date of birth
+            const dobInput = document.querySelector('#editForm input[type="date"]');
+            if (dobInput && member.dateOfBirth) {
+                dobInput.value = member.dateOfBirth;
+            }
+            
+            // Set blood group
+            const bloodGroupSelect = document.querySelectorAll('#editForm select')[1];
+            if (bloodGroupSelect && member.bloodGroup) {
+                bloodGroupSelect.value = member.bloodGroup;
+            }
+            
+            // Set address
+            const addressTextarea = document.querySelector('#editForm textarea');
+            if (addressTextarea && member.address) {
+                addressTextarea.value = member.address;
+            }
+            
+            // Set emergency contact fields
+            const emergencyInputs = document.querySelectorAll('#editForm input');
+            if (emergencyInputs.length >= 3) {
+                // Emergency contact name (3rd input)
+                if (emergencyInputs[2] && member.emergencyContactName) {
+                    emergencyInputs[2].value = member.emergencyContactName;
+                }
+                // Emergency contact number (4th input)
+                if (emergencyInputs[3] && member.emergencyContactNumber) {
+                    emergencyInputs[3].value = member.emergencyContactNumber;
+                }
+            }
+            
+            // Set emergency relationship
+            const relationshipSelect = document.querySelectorAll('#editForm select')[2];
+            if (relationshipSelect && member.emergencyRelationship) {
+                relationshipSelect.value = member.emergencyRelationship;
+            }
         }
 
         function renewMembership() {
