@@ -1027,17 +1027,24 @@
         }
 
         // Handle edit form submission
-        document.getElementById('editForm').addEventListener('submit', function(e) {
+        function handleEditFormSubmit(e) {
             e.preventDefault();
+            console.log('Form submitted!'); // Debug log
             
             // Get current member data
             const memberData = localStorage.getItem('currentMemberProfile');
-            if (!memberData) return;
+            if (!memberData) {
+                console.log('No member data found');
+                return;
+            }
             
             const member = JSON.parse(memberData);
+            console.log('Current member:', member);
             
             // Get form data
             const formInputs = document.querySelectorAll('#editForm input, #editForm select, #editForm textarea');
+            console.log('Form inputs found:', formInputs.length);
+            
             const updatedMember = { ...member };
             
             // Update member data with form values
@@ -1050,6 +1057,8 @@
             updatedMember.emergencyContactName = formInputs[6].value;
             updatedMember.emergencyContactNumber = formInputs[7].value;
             updatedMember.emergencyRelationship = formInputs[8].value;
+            
+            console.log('Updated member:', updatedMember);
             
             // Update localStorage with edited member data
             localStorage.setItem('currentMemberProfile', JSON.stringify(updatedMember));
@@ -1068,6 +1077,23 @@
             
             // Reload member data to show updated information
             loadMemberData();
+        }
+
+        // Initialize tab styles and event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load member data first
+            loadMemberData();
+            // Set initial tab styles
+            switchTab('personal');
+            
+            // Attach form submit handler
+            const editForm = document.getElementById('editForm');
+            if (editForm) {
+                editForm.addEventListener('submit', handleEditFormSubmit);
+                console.log('Edit form event listener attached');
+            } else {
+                console.log('Edit form not found!');
+            }
         });
 
         // Load member data from localStorage
@@ -1130,13 +1156,6 @@
             });
         }
 
-        // Initialize tab styles
-        document.addEventListener('DOMContentLoaded', function() {
-            // Load member data first
-            loadMemberData();
-            // Set initial tab styles
-            switchTab('personal');
-        });
     </script>
 
     <style>
